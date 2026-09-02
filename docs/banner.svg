@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-label="Supreme Metric">
+  <rect width="1200" height="320" fill="#07090D"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#F2EFE8">
+    <text x="60" y="150" font-size="84" letter-spacing="-1">Supreme Metric</text>
+    <text x="62" y="200" font-size="26" fill="#A8A59C" font-style="italic">One metric per question sits above the rest.</text>
+  </g>
+  <g font-family="-apple-system, Helvetica, Arial, sans-serif" font-weight="800" font-size="15" text-anchor="middle">
+    <!-- four bobbleheads -->
+    <g transform="translate(760 70)">
+      <rect width="96" height="72" rx="22" fill="#B8F27D"/><circle cx="38" cy="50" r="4" fill="#0B0D11"/><circle cx="58" cy="50" r="4" fill="#0B0D11"/>
+      <text x="48" y="32" fill="#0B0D11">SALES</text>
+      <rect x="33" y="72" width="30" height="34" rx="9" fill="#5E7A3F"/>
+    </g>
+    <g transform="translate(870 100)">
+      <rect width="96" height="72" rx="22" fill="#F5C542"/><circle cx="38" cy="50" r="4" fill="#0B0D11"/><circle cx="58" cy="50" r="4" fill="#0B0D11"/>
+      <text x="48" y="32" fill="#0B0D11">FINANCE</text>
+      <rect x="33" y="72" width="30" height="34" rx="9" fill="#7B6221"/>
+    </g>
+    <g transform="translate(980 70)">
+      <rect width="96" height="72" rx="22" fill="#8AB4FF"/><circle cx="38" cy="50" r="4" fill="#0B0D11"/><circle cx="58" cy="50" r="4" fill="#0B0D11"/>
+      <text x="48" y="32" fill="#0B0D11">MARKETING</text>
+      <rect x="33" y="72" width="30" height="34" rx="9" fill="#455A80"/>
+    </g>
+    <g transform="translate(1090 100)">
+      <rect width="96" height="72" rx="22" fill="#FF4D2E"/><circle cx="38" cy="50" r="4" fill="#0B0D11"/><circle cx="58" cy="50" r="4" fill="#0B0D11"/>
+      <text x="48" y="32" fill="#0B0D11">LOGISTICS</text>
+      <rect x="33" y="72" width="30" height="34" rx="9" fill="#802717"/>
+    </g>
+  </g>
+  <!-- the throne line -->
+  <line x1="760" y1="250" x2="1186" y2="250" stroke="#7DE0C8" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
+  <text x="973" y="285" font-family="Menlo, monospace" font-size="13" fill="#7DE0C8" text-anchor="middle" letter-spacing="3">EIGHT CLAIMS · SEVEN QUESTIONS · ONE RULING EACH</text>
+</svg>

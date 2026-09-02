@@ -1,0 +1,8 @@
+id: winning
+label: Are we winning?
+purpose: Measure share of the category against competitors.
+surface: weekly_leadership
+order: 2
+score: sales.market_share
+companions: [marketing.share_of_category_growth]
+windows: [p4w, p13w]

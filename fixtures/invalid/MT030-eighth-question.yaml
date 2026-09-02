@@ -1,0 +1,18 @@
+# The eight spoken claims of the Walk-Out plus the six siblings governance adds.
+surface: weekly_leadership
+claims:
+  - {id: c1,  owner: sales,     text: Sales are up 14%.,                     metric: sales.net_sales_consumption,        question: growing,            role: score,      window: p4w,           benchmark: iya}
+  - {id: c2,  owner: finance,   text: Shipped sales are up 9%.,              metric: finance.net_sales_shipped,          question: growing,            role: companion,  window: p4w,           benchmark: iya}
+  - {id: c3,  owner: sales,     text: Share is up 1.8 pts.,                  metric: sales.market_share,                 question: winning,            role: score,      window: p4w,           benchmark: pts_vs_ya}
+  - {id: c4,  owner: marketing, text: We took 31% of category growth.,       metric: marketing.share_of_category_growth, question: winning,            role: companion,  window: p13w,          benchmark: level}
+  - {id: c5,  owner: finance,   text: Margin is flat.,                       metric: finance.contribution_margin,        question: growing_profitably, role: score,      window: p4w,           benchmark: bps_vs_ya}
+  - {id: c6,  owner: logistics, text: Cost to serve is down 3%.,             metric: logistics.cost_to_serve,            question: growing_profitably, role: companion,  window: p4w,           benchmark: iya}
+  - {id: c7,  owner: finance,   text: Forecast says a softer Q4.,            metric: finance.forecast_vs_target,         question: holding,            role: score,      window: next_quarter,  benchmark: vs_target}
+  - {id: c8,  owner: sales,     text: Backlog is up vs. last quarter.,       metric: sales.open_order_backlog,           question: holding,            role: companion,  window: point_in_time, benchmark: vs_prior_quarter}
+  - {id: c9,  owner: marketing, text: Impression share is 5.4 pts down.,     metric: marketing.search_impression_share,  question: capturing,          role: score,      window: p4w,           benchmark: pts_vs_ya}
+  - {id: c10, owner: marketing, text: Click share is 2.1 pts down.,          metric: marketing.search_click_share,       question: capturing,          role: diagnostic, window: p4w,           benchmark: pts_vs_ya}
+  - {id: c11, owner: marketing, text: New shoppers are up.,                  metric: marketing.new_to_brand_customers,   question: recruiting,         role: score,      window: p4w,           benchmark: iya}
+  - {id: c12, owner: sales,     text: New shopper rate is up 0.4 pts.,       metric: sales.new_shopper_rate,             question: recruiting,         role: companion,  window: p4w,           benchmark: pts_vs_ya}
+  - {id: c13, owner: logistics, text: Inventory is piling up.,               metric: logistics.inventory_weeks_of_cover, question: serving,            role: score,      window: point_in_time, benchmark: vs_target_band}
+  - {id: c14, owner: logistics, text: Shipped items are blocked.,            metric: logistics.fill_rate,                question: serving,            role: companion,  window: this_week,     benchmark: vs_target}
+  - {id: c15, owner: marketing, text: ROAS is 4.1., metric: finance.avg_selling_price, question: efficient, role: score, window: p4w, benchmark: iya}

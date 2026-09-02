@@ -1,0 +1,5 @@
+id: RULING-001-ACTIVATION
+date: 2026-09-01
+owner: product
+statement: Activated accounts is the score; signup completion is required context.
+applies_to: [activation, product.activated_accounts, product.signup_completion]

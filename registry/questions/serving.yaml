@@ -1,0 +1,8 @@
+id: serving
+label: Can we serve the demand?
+purpose: Confirm supply can meet what the front of the report promises.
+surface: weekly_leadership
+order: 7
+score: logistics.inventory_weeks_of_cover
+companions: [logistics.fill_rate]
+windows: [point_in_time, this_week]

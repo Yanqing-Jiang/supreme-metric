@@ -1,0 +1,10 @@
+id: growing_profitably
+label: Are we growing profitably?
+purpose: Confirm that growth is not bought with margin.
+surface: weekly_leadership
+order: 3
+score: finance.contribution_margin
+companions: [logistics.cost_to_serve]
+prohibited:
+  - {metric: finance.avg_selling_price, reason: Aggregate ASP is not a leadership KPI}
+windows: [p4w]

@@ -1,0 +1,5 @@
+id: RULING-2026-07-01-CONSUMPTION-IS-GROWTH
+date: 2026-07-01
+owner: finance
+statement: Growth is consumption. Shipped sales sit beside it as a companion and are never netted against it.
+applies_to: [growing, sales.net_sales_consumption, finance.net_sales_shipped]

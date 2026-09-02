@@ -1,0 +1,41 @@
+metrics:
+  - id: finance.net_sales_shipped
+    label: Net sales, shipped
+    definition: Manufacturer shipments to the retailer, units times average selling price, in USD.
+    owner: finance
+    universe: manufacturer_sell_in
+    grain: week x bu
+    roles_allowed: [companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [iya]
+
+  - id: finance.contribution_margin
+    label: Contribution margin
+    definition: Net sales less variable cost, mix-adjusted to the current period.
+    owner: finance
+    universe: finance_ledger
+    grain: week x bu
+    roles_allowed: [score, companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [bps_vs_ya]
+
+  - id: finance.forecast_vs_target
+    label: Sales forecast vs. target
+    definition: Latest consensus forecast for the coming quarter against the committed target.
+    owner: finance
+    universe: planning
+    grain: quarter x bu
+    roles_allowed: [score, companion]
+    windows: [next_quarter]
+    benchmarks: [vs_target]
+
+  # Registered, diagnostic only. Aggregate ASP is banned as a leadership KPI.
+  - id: finance.avg_selling_price
+    label: Average selling price
+    definition: Net sales divided by units, aggregated across the mix.
+    owner: finance
+    universe: retailer_sell_out
+    grain: week x bu
+    roles_allowed: [diagnostic]
+    windows: [p4w]
+    benchmarks: [iya]

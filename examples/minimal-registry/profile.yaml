@@ -1,0 +1,14 @@
+# Neutral starter vocabulary. Copy this to your registry as profile.yaml and rename things.
+spec_version: 1
+name: my-org
+owners:
+  product: {label: Product}
+surfaces:
+  product_review: {label: Product review, cadence: week, closed: true}
+windows:
+  trailing_28d: {label: Trailing 28 days, kind: flow}
+benchmarks:
+  year_ago: {label: vs. year ago}
+display:
+  currency: USD
+  magnitude: words

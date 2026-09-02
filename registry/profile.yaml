@@ -1,0 +1,35 @@
+# Vocabulary for the reference sales organization. Content, not core.
+spec_version: 1
+name: reference-sales-org
+owners:
+  sales:      {label: Sales,      color: "#B8F27D"}
+  finance:    {label: Finance,    color: "#F5C542"}
+  marketing:  {label: Marketing,  color: "#8AB4FF"}
+  logistics:  {label: Logistics,  color: "#FF4D2E"}
+  governance: {label: Governance, color: "#7DE0C8"}
+surfaces:
+  weekly_leadership:
+    label: Business performance
+    cadence: week
+    closed: true
+windows:
+  p1w:           {label: Past week,        kind: flow}
+  p4w:           {label: Past 4 weeks,     kind: flow}
+  p13w:          {label: Past 13 weeks,    kind: flow}
+  fytd:          {label: Fiscal year to date, kind: flow}
+  this_week:     {label: This week,        kind: flow}
+  next_quarter:  {label: Next quarter,     kind: flow}
+  point_in_time: {label: Point in time,    kind: snapshot}
+benchmarks:
+  iya:              {label: Index vs. year ago}
+  pts_vs_ya:        {label: Share points vs. year ago}
+  bps_vs_ya:        {label: Basis points vs. year ago}
+  vs_target:        {label: vs. target}
+  vs_target_band:   {label: vs. target band}
+  vs_prior_quarter: {label: vs. prior quarter}
+  level:            {label: Level only, no comparison}
+  # Defined so a claim can name it and be rejected on the leadership surface.
+  wow:              {label: Week over week, allowed_on_surfaces: []}
+display:
+  currency: USD
+  magnitude: words

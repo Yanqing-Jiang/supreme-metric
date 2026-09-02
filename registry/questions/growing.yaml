@@ -1,0 +1,11 @@
+id: growing
+label: Are we growing?
+purpose: Measure realized business growth before profitability or share.
+surface: weekly_leadership
+order: 1
+score: sales.net_sales_consumption
+companions: [finance.net_sales_shipped]
+prohibited:
+  - {metric: sales.units, reason: Units are not a leadership metric}
+windows: [p4w, fytd]
+rulings: [RULING-2026-07-01-CONSUMPTION-IS-GROWTH, RULING-2026-06-14-NO-UNITS]

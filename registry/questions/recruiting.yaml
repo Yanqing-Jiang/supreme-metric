@@ -1,0 +1,8 @@
+id: recruiting
+label: Are we recruiting customers?
+purpose: Measure whether new shoppers are entering the franchise.
+surface: weekly_leadership
+order: 6
+score: marketing.new_to_brand_customers
+companions: [sales.new_shopper_rate]
+windows: [p4w]

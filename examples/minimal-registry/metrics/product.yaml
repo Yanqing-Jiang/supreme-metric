@@ -1,0 +1,19 @@
+metrics:
+  - id: product.activated_accounts
+    label: Activated accounts
+    definition: New accounts completing the activation event within 28 days.
+    owner: product
+    universe: new_accounts
+    grain: day x account
+    roles_allowed: [score]
+    windows: [trailing_28d]
+    benchmarks: [year_ago]
+  - id: product.signup_completion
+    label: Signup completion rate
+    definition: Started signups that complete account creation.
+    owner: product
+    universe: started_signups
+    grain: day x signup
+    roles_allowed: [companion, diagnostic]
+    windows: [trailing_28d]
+    benchmarks: [year_ago]

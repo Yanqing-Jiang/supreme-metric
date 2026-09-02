@@ -1,0 +1,8 @@
+id: activation
+label: Are new accounts activating?
+purpose: Decide whether onboarding needs intervention.
+surface: product_review
+order: 1
+score: product.activated_accounts
+companions: [product.signup_completion]
+rulings: [RULING-001-ACTIVATION]

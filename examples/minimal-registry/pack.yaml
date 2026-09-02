@@ -1,0 +1,6 @@
+surface: product_review
+claims:
+  - {id: c1, owner: product, text: Activated accounts are up 9% vs. year ago.,
+     metric: product.activated_accounts, question: activation, role: score, window: trailing_28d, benchmark: year_ago}
+  - {id: c2, owner: product, text: Signup completion is flat vs. year ago.,
+     metric: product.signup_completion, question: activation, role: companion, window: trailing_28d, benchmark: year_ago}

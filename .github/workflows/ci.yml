@@ -1,0 +1,15 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  compile-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e ".[dev]"
+      - run: supreme compile registry --out dist/topology.json
+      - run: supreme compile examples/minimal-registry --out dist/minimal.json
+      - run: supreme lint fixtures/clean/pack.yaml --topology dist/topology.json
+      - run: supreme lint examples/minimal-registry/pack.yaml --topology dist/minimal.json
+      - run: pytest -q

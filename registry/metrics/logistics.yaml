@@ -1,0 +1,30 @@
+metrics:
+  - id: logistics.cost_to_serve
+    label: Cost to serve
+    definition: Fully loaded logistics cost per unit shipped to the retailer.
+    owner: logistics
+    universe: supply_chain_ledger
+    grain: week x bu
+    roles_allowed: [companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [iya]
+
+  - id: logistics.inventory_weeks_of_cover
+    label: Inventory weeks of cover
+    definition: On-hand retailer inventory divided by average weekly sell-out, at the snapshot date.
+    owner: logistics
+    universe: supply
+    grain: week x item -> bu
+    roles_allowed: [score, companion, diagnostic]
+    windows: [point_in_time]
+    benchmarks: [vs_target_band]
+
+  - id: logistics.fill_rate
+    label: Shipped units, fill rate
+    definition: Units shipped as a share of units ordered in the week.
+    owner: logistics
+    universe: order_management
+    grain: week x bu
+    roles_allowed: [companion, diagnostic]
+    windows: [this_week]
+    benchmarks: [vs_target]

@@ -1,0 +1,8 @@
+id: holding
+label: Will it hold next quarter?
+purpose: Look forward one quarter before the quarter arrives.
+surface: weekly_leadership
+order: 4
+score: finance.forecast_vs_target
+companions: [sales.open_order_backlog]
+windows: [next_quarter, point_in_time]

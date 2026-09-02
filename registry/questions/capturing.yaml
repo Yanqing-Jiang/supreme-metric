@@ -1,0 +1,9 @@
+id: capturing
+label: Are we capturing search demand?
+purpose: Measure our share of contested generic search traffic.
+surface: weekly_leadership
+order: 5
+score: marketing.search_impression_share
+companions: []
+diagnostics: [marketing.search_click_share]
+windows: [p4w]

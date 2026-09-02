@@ -1,0 +1,63 @@
+metrics:
+  - id: sales.net_sales_consumption
+    label: Net sales, consumption
+    definition: Retailer sell-out revenue of mapped items, net of returns, in USD.
+    owner: sales
+    universe: retailer_sell_out
+    grain: week x bu
+    roles_allowed: [score, companion, diagnostic]
+    windows: [p1w, p4w, p13w, fytd]
+    benchmarks: [iya]
+    not_comparable_with:
+      - {metric: finance.net_sales_shipped, reason: Sell-out and sell-in are different universes}
+    reason_codes: [distribution, price, promo, event, supply, comp_launch, data_gap]
+    impl_ref:
+      adapter: databricks
+      ref: sales_gold.leadership.net_sales_consumption#net_sales
+    rulings: [RULING-2026-07-01-CONSUMPTION-IS-GROWTH]
+
+  - id: sales.market_share
+    label: Market share
+    definition: Our dollar share of the tracked category in the household panel.
+    owner: sales
+    universe: panel
+    grain: week x category
+    roles_allowed: [score, companion, diagnostic]
+    windows: [p4w, p13w]
+    benchmarks: [pts_vs_ya]
+    not_comparable_with:
+      - {metric: marketing.search_impression_share, reason: Search universe and panel universe do not reconcile}
+
+  - id: sales.open_order_backlog
+    label: Open order backlog
+    definition: Value of confirmed retailer orders not yet shipped, at the snapshot date.
+    owner: sales
+    universe: order_management
+    grain: snapshot x bu
+    roles_allowed: [companion, diagnostic]
+    windows: [point_in_time]
+    benchmarks: [vs_prior_quarter]
+
+  - id: sales.new_shopper_rate
+    label: New shopper rate
+    definition: Share of category shoppers in the panel who bought our brand for the first time in the window.
+    owner: sales
+    universe: panel
+    grain: week x category
+    roles_allowed: [companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [pts_vs_ya]
+    not_comparable_with:
+      - {metric: marketing.new_to_brand_customers, reason: Household panel and retailer shopper file are different universes}
+
+  # Registered, never scoreable. Exists so a fixture can show an inadmissible claim.
+  - id: sales.units
+    label: Units sold
+    definition: Retailer sell-out units of mapped items.
+    owner: sales
+    universe: retailer_sell_out
+    grain: week x bu
+    roles_allowed: [context]
+    windows: [p1w, p4w]
+    benchmarks: [iya, level]
+    rulings: [RULING-2026-06-14-NO-UNITS]

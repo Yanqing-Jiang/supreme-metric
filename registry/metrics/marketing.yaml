@@ -1,0 +1,40 @@
+metrics:
+  - id: marketing.share_of_category_growth
+    label: Share of category growth
+    definition: Our incremental dollars as a share of the category's incremental dollars over the window.
+    owner: marketing
+    universe: panel
+    grain: p13w x category
+    roles_allowed: [companion, diagnostic]
+    windows: [p13w]
+    benchmarks: [level]
+
+  - id: marketing.search_impression_share
+    label: Search impression share
+    definition: Our share of impressions on generic, non-branded search queries in the category.
+    owner: marketing
+    universe: retailer_search
+    grain: week x category
+    roles_allowed: [score, companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [pts_vs_ya]
+
+  - id: marketing.search_click_share
+    label: Search click share
+    definition: Our share of clicks on generic, non-branded search queries in the category.
+    owner: marketing
+    universe: retailer_search
+    grain: week x category
+    roles_allowed: [diagnostic]
+    windows: [p4w]
+    benchmarks: [pts_vs_ya]
+
+  - id: marketing.new_to_brand_customers
+    label: New-to-brand customers
+    definition: Shoppers in the retailer file with a first brand purchase in the window.
+    owner: marketing
+    universe: retailer_shopper
+    grain: week x brand
+    roles_allowed: [score, companion, diagnostic]
+    windows: [p4w]
+    benchmarks: [iya]
