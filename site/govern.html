@@ -1,0 +1,400 @@
+<title>Supreme Metric</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&family=Manrope:wght@600;800&display=swap">
+<style>
+:root{--bg:#07090D;--bg2:#0E1218;--bg3:#141A22;--ink:#F2EFE8;--ink2:#A8A59C;--ink3:#5E5C55;--line:#222834;--hot:#FF4D2E;--cool:#7DE0C8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cool);outline-offset:2px}
+a{color:var(--cool)}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 22px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}
+.k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);font-weight:800}
+.top a{font-size:12px;font-weight:800;text-decoration:none;border:1px solid var(--line);padding:6px 12px;border-radius:99px;color:var(--ink2)}
+.stage{position:relative;border:1px solid var(--line);border-radius:16px;background:var(--bg2);height:700px;overflow:hidden;padding:18px 24px;display:flex;flex-direction:column;gap:14px;user-select:none;-webkit-user-select:none}
+svg.links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;fill:none;z-index:1}
+.links path{stroke:var(--line);stroke-width:1.5;stroke-dasharray:2 7;stroke-linecap:round;transition:stroke .6s}
+.links circle{fill:var(--line);transition:fill .6s}
+.done .links path{stroke:#B8F27D;animation:march 1.4s linear infinite}
+.done .links circle{fill:#B8F27D}
+@keyframes march{to{stroke-dashoffset:-18}}
+
+/* ---------- level 1 · the closed surface ---------- */
+.l1{display:flex;gap:8px;align-items:stretch;position:relative;z-index:2}
+.master{background:var(--bg3);border:1px solid var(--cool);border-radius:10px;padding:8px 14px;font:400 18px "Instrument Serif",serif;white-space:nowrap;box-shadow:0 0 0 4px rgba(125,224,200,.06)}
+.qs{display:flex;gap:6px;flex:1;min-width:0}
+.qc{--cc:#fff;flex:1;min-width:0;background:var(--bg3);border:1px solid var(--line);border-top:2px solid var(--cc);border-radius:8px;padding:6px 8px;font:400 13px "Instrument Serif",serif;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;gap:6px;align-items:center;transition:.5s}
+.qc i{font-style:normal;font:700 10px "Space Mono",monospace;color:var(--ink3)}
+.qc.lit{color:var(--ink2)}.qc.lit i{color:#B8F27D}
+.qc.me{color:var(--ink);border-color:var(--cool);box-shadow:0 0 0 3px rgba(125,224,200,.1)}
+.qc.me i{color:var(--hot)}.qc.me.lit i{color:#B8F27D}
+
+/* ---------- level 2 + 3 · one question, two slots ---------- */
+.mid{display:grid;grid-template-columns:1fr 300px;gap:20px;flex:1;min-height:0;position:relative;z-index:2}
+.play{display:flex;flex-direction:column;align-items:center;gap:26px}
+.q{--cc:#B8F27D;background:var(--bg3);border:1px solid var(--line);border-top:2px solid var(--cc);border-radius:10px;padding:12px 22px;font:400 24px "Instrument Serif",serif;text-wrap:balance}
+.cols{display:flex;gap:40px}
+.col{width:260px;display:flex;flex-direction:column;gap:10px}
+.slot{height:120px;border:1.5px dashed #2A3242;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--ink3);transition:.3s;position:relative}
+.slot b{font:800 10px Manrope;letter-spacing:.2em}
+.slot .crown{font-size:22px;line-height:1;color:var(--ink3);transition:.3s}
+.slot.over{border-color:var(--cool);background:rgba(125,224,200,.05);border-style:solid}
+.slot.full{border-style:solid;border-color:var(--line)}
+.slot.full>*{opacity:0}
+.slot.no{border-color:var(--hot);background:rgba(255,77,46,.08);animation:mad .3s linear 2}
+.slot.need{border-color:var(--hot);animation:need 1.6s ease-in-out infinite}
+@keyframes need{50%{border-color:#2A3242}}
+@keyframes mad{0%,100%{margin-left:0}25%{margin-left:-4px}75%{margin-left:4px}}
+.done .slot.full{border-color:var(--cool);box-shadow:0 0 0 5px rgba(125,224,200,.08)}
+.badge{position:absolute;left:50%;top:-12px;transform:translate(-50%,-100%);background:var(--bg);border:1px solid var(--hot);color:var(--hot);border-radius:8px;padding:7px 10px;font:400 11px "Space Mono",monospace;width:max-content;max-width:300px;line-height:1.35;z-index:9;opacity:0;transition:.25s}
+.badge.in{opacity:1;transform:translate(-50%,-100%) translateY(-4px)}
+.badge b{font-weight:700;margin-right:6px}
+
+/* define panel */
+.def{border:1px solid var(--line);border-radius:12px;background:var(--bg3);padding:10px 12px;display:flex;flex-direction:column;gap:9px}
+.def[hidden]{display:none}
+.st{font:400 11px "Space Mono",monospace;line-height:1.35;min-height:30px;color:var(--ink3);padding:4px 6px;border-radius:6px}
+.st.ok{color:var(--cool);background:rgba(125,224,200,.07)}
+.st.bad{color:var(--hot);background:rgba(255,77,46,.07)}
+.st b{font-weight:700;margin-right:6px}
+.row{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.row .k{width:100%;font-size:9px;margin-bottom:-2px}
+.chip{border:1px solid var(--line);border-radius:99px;padding:5px 10px;font-size:11.5px;font-weight:800;color:var(--ink2);background:var(--bg2);transition:.2s}
+.chip:hover{border-color:var(--ink3);color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.bad{background:transparent;color:var(--hot);border-color:var(--hot);text-decoration:line-through}
+.chip.hint{border-color:var(--cool);color:var(--cool);animation:glow 1.2s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 4px rgba(125,224,200,.18)}}
+
+/* ---------- terminal ---------- */
+.term{border:1px solid var(--line);border-radius:12px;background:#05070A;padding:14px 16px;font:400 11.5px "Space Mono",monospace;line-height:1.55;color:var(--ink2);overflow:hidden;align-self:start;width:100%}
+.term .p{color:var(--ink3)}.term .p b{color:var(--ink);font-weight:700}
+.term .f{color:var(--hot);word-break:break-word}.term .f b{font-weight:700}
+.term .w{color:var(--ink3)}
+.term .ok{color:var(--cool)}
+.term .x{margin-top:6px;color:var(--ink3)}.done .term .x{color:var(--cool)}
+
+/* ---------- bench ---------- */
+.bench{position:relative;z-index:2;display:grid;grid-template-columns:1fr 300px;gap:20px}
+.bl{display:flex;flex-direction:column;align-items:center;gap:8px}
+.spots{display:flex;gap:26px}
+.spot{width:220px;height:96px;border-radius:12px;border:1px dashed #1B212B}
+.hint-t{transition:opacity .5s}
+
+/* ---------- metric cards ---------- */
+.card{--cc:#fff;position:absolute;left:0;top:0;width:220px;height:96px;z-index:5;background:var(--bg3);border:1px solid var(--cc);border-radius:12px;padding:10px 12px 10px 74px;display:flex;flex-direction:column;justify-content:center;gap:3px;cursor:grab;touch-action:none;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .4s,box-shadow .3s;box-shadow:0 10px 30px rgba(0,0,0,.35);will-change:transform}
+.card.lift{cursor:grabbing;z-index:20;box-shadow:0 24px 50px rgba(0,0,0,.6);transition:none}
+.card.sel{box-shadow:0 0 0 3px var(--cool),0 10px 30px rgba(0,0,0,.35)}
+.card .lb{font-weight:800;font-size:12.5px;line-height:1.2}
+.card .cl{font:italic 400 15px "Instrument Serif",serif;color:var(--ink);line-height:1.15;display:none}
+.card .mt{font:600 9.5px Manrope;color:var(--ink2);letter-spacing:.04em;display:none}
+.card.def .cl,.card.def .mt{display:block}
+.card.def .lb{font-size:10px;color:var(--cc);letter-spacing:.08em;text-transform:uppercase}
+.card.ok{border-color:var(--cool)}
+.card.bad{border-color:var(--hot);box-shadow:0 0 0 2px rgba(255,77,46,.35),0 10px 30px rgba(255,77,46,.15)}
+.card.ctx{opacity:.55;filter:saturate(.5)}
+.card .tag{position:absolute;right:-6px;top:-10px;transform:rotate(6deg);border:1.5px solid var(--hot);color:var(--hot);background:var(--bg);font:700 9px "Space Mono",monospace;letter-spacing:.2em;padding:3px 7px;border-radius:4px;display:none}
+.card.ctx .tag{display:block}
+.card.shake{animation:mad .25s linear 3}
+.card.in{animation:float .7s cubic-bezier(.2,.8,.2,1.2) both}
+@keyframes float{from{opacity:0;margin-top:40px}to{opacity:1;margin-top:0}}
+/* owner chip = a small bobblehead */
+.hd{position:absolute;left:10px;top:50%;margin-top:-22px;width:56px;height:44px;background:var(--c);border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transform-origin:50% 110%;animation:bobble 2.4s ease-in-out infinite;box-shadow:0 4px 12px rgba(0,0,0,.45)}
+.hd b{font:800 9px Manrope;letter-spacing:.04em;color:#0B0D11}
+.hd i{display:flex;gap:6px}.hd i u{display:block;width:4px;height:4px;border-radius:50%;background:#0B0D11}
+@keyframes bobble{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+
+/* ---------- ruling stamp ---------- */
+.stamp{position:absolute;left:50%;top:44%;z-index:30;width:360px;transform:translate(-50%,-50%) rotate(-5deg) scale(1.6);opacity:0;pointer-events:none;border:3px solid var(--hot);border-radius:8px;background:rgba(7,9,13,.94);color:var(--hot);padding:14px 18px;box-shadow:0 20px 60px rgba(0,0,0,.6);transition:.22s cubic-bezier(.2,.9,.3,1.3)}
+.stamp.in{opacity:1;transform:translate(-50%,-50%) rotate(-5deg) scale(1)}
+.stamp .k{color:var(--hot);opacity:.8}
+.stamp p{margin:6px 0 0;font:italic 400 21px "Instrument Serif",serif;line-height:1.2;color:var(--ink)}
+
+/* ---------- finale ---------- */
+.fin{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:25;display:flex;gap:12px;opacity:0;pointer-events:none;transition:.5s}
+.done .fin{opacity:1;pointer-events:auto}
+.go{background:var(--cool);color:#07090D;font-weight:800;padding:13px 26px;border-radius:99px;font-size:14px;letter-spacing:.04em;text-decoration:none;box-shadow:0 10px 30px rgba(125,224,200,.25)}
+.go.alt{background:transparent;color:var(--ink2);border:1px solid var(--line);box-shadow:none}
+.done .bench{opacity:.15}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:900px){.mid{grid-template-columns:1fr}.term{display:none}.stage{height:auto;min-height:760px}.master{display:none}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div class="k">Supreme Metric · level 3 · govern one question</div>
+    <a href="https://github.com/Yanqing-Jiang/supreme-metric" target="_blank" rel="noopener">See the repo ↗</a>
+  </div>
+  <div class="stage" id="stage">
+    <svg class="links" id="links"></svg>
+    <div class="l1"><div class="master" id="master"></div><div class="qs" id="qs"></div></div>
+    <div class="mid">
+      <div class="play">
+        <div class="q" id="q"></div>
+        <div class="cols">
+          <div class="col"><div class="slot" data-role="score" tabindex="0"><span class="crown">♛</span><b>SCORE</b><div class="badge"></div></div><div class="def" hidden></div></div>
+          <div class="col"><div class="slot" data-role="companion" tabindex="0"><span class="crown">·</span><b>COMPANION</b><div class="badge"></div></div><div class="def" hidden></div></div>
+        </div>
+      </div>
+      <div class="term" id="term"></div>
+    </div>
+    <div class="bench"><div class="bl"><div class="k hint-t" id="hint">Drag a metric</div><div class="spots" id="spots"></div></div></div>
+    <div class="stamp" id="stamp"></div>
+    <div class="fin"><a class="go" href="https://github.com/Yanqing-Jiang/supreme-metric" target="_blank" rel="noopener">See the repo</a><button class="go alt" id="replay">↻ Replay</button></div>
+  </div>
+</div>
+
+<script>
+/* ================= registry (the repo's YAML, verbatim ids/labels) ================= */
+const PROFILE={
+ owners:{sales:{label:'Sales',color:'#B8F27D'},finance:{label:'Finance',color:'#F5C542'},marketing:{label:'Marketing',color:'#8AB4FF'},logistics:{label:'Logistics',color:'#FF4D2E'},governance:{label:'Governance',color:'#7DE0C8'}},
+ surfaces:{weekly_leadership:{label:'Business performance',cadence:'week',closed:true}},
+ windows:{p1w:{label:'Past week'},p4w:{label:'Past 4 weeks'},p13w:{label:'Past 13 weeks'},fytd:{label:'Fiscal year to date'},this_week:{label:'This week'},next_quarter:{label:'Next quarter'},point_in_time:{label:'Point in time'}},
+ benchmarks:{iya:{label:'Index vs. year ago'},pts_vs_ya:{label:'Share points vs. year ago'},bps_vs_ya:{label:'Basis points vs. year ago'},vs_target:{label:'vs. target'},vs_target_band:{label:'vs. target band'},vs_prior_quarter:{label:'vs. prior quarter'},level:{label:'Level only, no comparison'},wow:{label:'Week over week',allowed_on_surfaces:[]}}};
+const METRICS=[
+ {id:'sales.net_sales_consumption',label:'Net sales, consumption',owner:'sales',roles_allowed:['score','companion','diagnostic'],windows:['p1w','p4w','p13w','fytd'],benchmarks:['iya'],not_comparable_with:[{metric:'finance.net_sales_shipped',reason:'Sell-out and sell-in are different universes'}],rulings:['RULING-2026-07-01-CONSUMPTION-IS-GROWTH']},
+ {id:'sales.market_share',label:'Market share',owner:'sales',roles_allowed:['score','companion','diagnostic'],windows:['p4w','p13w'],benchmarks:['pts_vs_ya'],not_comparable_with:[{metric:'marketing.search_impression_share',reason:'Search universe and panel universe do not reconcile'}]},
+ {id:'sales.open_order_backlog',label:'Open order backlog',owner:'sales',roles_allowed:['companion','diagnostic'],windows:['point_in_time'],benchmarks:['vs_prior_quarter']},
+ {id:'sales.new_shopper_rate',label:'New shopper rate',owner:'sales',roles_allowed:['companion','diagnostic'],windows:['p4w'],benchmarks:['pts_vs_ya'],not_comparable_with:[{metric:'marketing.new_to_brand_customers',reason:'Household panel and retailer shopper file are different universes'}]},
+ {id:'sales.units',label:'Units sold',owner:'sales',roles_allowed:['context'],windows:['p1w','p4w'],benchmarks:['iya','level'],rulings:['RULING-2026-06-14-NO-UNITS']},
+ {id:'finance.net_sales_shipped',label:'Net sales, shipped',owner:'finance',roles_allowed:['companion','diagnostic'],windows:['p4w'],benchmarks:['iya']},
+ {id:'finance.contribution_margin',label:'Contribution margin',owner:'finance',roles_allowed:['score','companion','diagnostic'],windows:['p4w'],benchmarks:['bps_vs_ya']},
+ {id:'finance.forecast_vs_target',label:'Sales forecast vs. target',owner:'finance',roles_allowed:['score','companion'],windows:['next_quarter'],benchmarks:['vs_target']},
+ {id:'finance.avg_selling_price',label:'Average selling price',owner:'finance',roles_allowed:['diagnostic'],windows:['p4w'],benchmarks:['iya']},
+ {id:'marketing.share_of_category_growth',label:'Share of category growth',owner:'marketing',roles_allowed:['companion','diagnostic'],windows:['p13w'],benchmarks:['level']},
+ {id:'marketing.search_impression_share',label:'Search impression share',owner:'marketing',roles_allowed:['score','companion','diagnostic'],windows:['p4w'],benchmarks:['pts_vs_ya']},
+ {id:'marketing.search_click_share',label:'Search click share',owner:'marketing',roles_allowed:['diagnostic'],windows:['p4w'],benchmarks:['pts_vs_ya']},
+ {id:'marketing.new_to_brand_customers',label:'New-to-brand customers',owner:'marketing',roles_allowed:['score','companion','diagnostic'],windows:['p4w'],benchmarks:['iya']},
+ {id:'logistics.cost_to_serve',label:'Cost to serve',owner:'logistics',roles_allowed:['companion','diagnostic'],windows:['p4w'],benchmarks:['iya']},
+ {id:'logistics.inventory_weeks_of_cover',label:'Inventory weeks of cover',owner:'logistics',roles_allowed:['score','companion','diagnostic'],windows:['point_in_time'],benchmarks:['vs_target_band']},
+ {id:'logistics.fill_rate',label:'Shipped units, fill rate',owner:'logistics',roles_allowed:['companion','diagnostic'],windows:['this_week'],benchmarks:['vs_target']}];
+const QUESTIONS=[
+ {id:'growing',label:'Are we growing?',surface:'weekly_leadership',order:1,score:'sales.net_sales_consumption',companions:['finance.net_sales_shipped'],prohibited:[{metric:'sales.units',reason:'Units are not a leadership metric'}],windows:['p4w','fytd'],rulings:['RULING-2026-07-01-CONSUMPTION-IS-GROWTH','RULING-2026-06-14-NO-UNITS']},
+ {id:'winning',label:'Are we winning?',surface:'weekly_leadership',order:2,score:'sales.market_share',companions:['marketing.share_of_category_growth'],windows:['p4w','p13w']},
+ {id:'growing_profitably',label:'Are we growing profitably?',surface:'weekly_leadership',order:3,score:'finance.contribution_margin',companions:['logistics.cost_to_serve'],prohibited:[{metric:'finance.avg_selling_price',reason:'Aggregate ASP is not a leadership KPI'}],windows:['p4w']},
+ {id:'holding',label:'Will it hold next quarter?',surface:'weekly_leadership',order:4,score:'finance.forecast_vs_target',companions:['sales.open_order_backlog'],windows:['next_quarter','point_in_time']},
+ {id:'capturing',label:'Are we capturing search demand?',surface:'weekly_leadership',order:5,score:'marketing.search_impression_share',companions:[],diagnostics:['marketing.search_click_share'],windows:['p4w']},
+ {id:'recruiting',label:'Are we recruiting customers?',surface:'weekly_leadership',order:6,score:'marketing.new_to_brand_customers',companions:['sales.new_shopper_rate'],windows:['p4w']},
+ {id:'serving',label:'Can we serve the demand?',surface:'weekly_leadership',order:7,score:'logistics.inventory_weeks_of_cover',companions:['logistics.fill_rate'],windows:['point_in_time','this_week']}];
+const RULINGS=[
+ {id:'RULING-2026-06-14-NO-UNITS',date:'2026-06-14',owner:'sales',statement:'Units are not a leadership metric. Use sales dollars and share.',applies_to:['sales.units','growing']},
+ {id:'RULING-2026-07-01-CONSUMPTION-IS-GROWTH',date:'2026-07-01',owner:'finance',statement:'Growth is consumption. Shipped sales sit beside it as a companion and are never netted against it.',applies_to:['growing','sales.net_sales_consumption','finance.net_sales_shipped']},
+ {id:'RULING-2026-06-14-IYA-ONLY',date:'2026-06-14',owner:'governance',statement:'Leadership performance is shown as index versus year ago or versus target. Never week over week on the leadership surface.',applies_to:['weekly_leadership']},
+ {id:'RULING-2026-07-20-WEEKLY-SURFACE',date:'2026-07-20',owner:'governance',statement:'Monthly-grain metrics do not appear on the weekly surface.',applies_to:['weekly_leadership']}];
+// edges are derived, never authored
+const MAN={profile:PROFILE,metrics:METRICS,questions:QUESTIONS,edges:METRICS.flatMap(m=>(m.not_comparable_with||[]).map(n=>{const [a,b]=[m.id,n.metric].sort();return {kind:'not_comparable_with',a,b,reason:n.reason};}))};
+const SURF='weekly_leadership',QID='growing';
+// the other six questions are already governed: fixtures/clean/pack.yaml, claims c3..c14
+const HIDDEN=[
+ ['c3','sales','Share is up 1.8 pts.','sales.market_share','winning','score','p4w','pts_vs_ya'],
+ ['c4','marketing','We took 31% of category growth.','marketing.share_of_category_growth','winning','companion','p13w','level'],
+ ['c5','finance','Margin is flat.','finance.contribution_margin','growing_profitably','score','p4w','bps_vs_ya'],
+ ['c6','logistics','Cost to serve is down 3%.','logistics.cost_to_serve','growing_profitably','companion','p4w','iya'],
+ ['c7','finance','Forecast says a softer Q4.','finance.forecast_vs_target','holding','score','next_quarter','vs_target'],
+ ['c8','sales','Backlog is up vs. last quarter.','sales.open_order_backlog','holding','companion','point_in_time','vs_prior_quarter'],
+ ['c9','marketing','Impression share is 5.4 pts down.','marketing.search_impression_share','capturing','score','p4w','pts_vs_ya'],
+ ['c10','marketing','Click share is 2.1 pts down.','marketing.search_click_share','capturing','diagnostic','p4w','pts_vs_ya'],
+ ['c11','marketing','New shoppers are up.','marketing.new_to_brand_customers','recruiting','score','p4w','iya'],
+ ['c12','sales','New shopper rate is up 0.4 pts.','sales.new_shopper_rate','recruiting','companion','p4w','pts_vs_ya'],
+ ['c13','logistics','Inventory is piling up.','logistics.inventory_weeks_of_cover','serving','score','point_in_time','vs_target_band'],
+ ['c14','logistics','Shipped items are blocked.','logistics.fill_rate','serving','companion','this_week','vs_target']
+].map(([id,owner,text,metric,question,role,window,benchmark])=>({id,owner,text,metric,question,role,window,benchmark}));
+// the three loose cards the player governs
+const CARDS={'sales.net_sales_consumption':{cid:'c1',text:'Sales are up 14%.'},'finance.net_sales_shipped':{cid:'c2',text:'Shipped sales are up 9%.'},'sales.units':{cid:'c0',text:'Units are up 6%.'}};
+const WIN_OPTS=['p1w','p4w','p13w','fytd'],BM_OPTS=['iya','wow','level'];
+
+/* ================= linter · a line-for-line port of supreme_metric/lint.py ================= */
+function lint(pack,man){
+ const out=[],F=(code,claim,message,rulings=[])=>out.push({code,claim,message,rulings});
+ const metrics=Object.fromEntries(man.metrics.map(m=>[m.id,m])),questions=Object.fromEntries(man.questions.map(q=>[q.id,q]));
+ const denied=Object.fromEntries(man.edges.filter(e=>e.kind==='not_comparable_with').map(e=>[e.a+'|'+e.b,e]));
+ const prof=man.profile;
+ if(pack.topology_digest&&pack.topology_digest!==man.topology_digest)F('MT070',null,`pack pinned to ${pack.topology_digest.slice(0,19)}…, manifest is ${String(man.topology_digest).slice(0,19)}…`);
+ const surface=pack.surface;
+ if(!(surface in prof.surfaces)){F('MT001',null,`unknown surface \`${surface}\``);return out;}
+ const scored={},order=[];
+ for(const c of pack.claims||[]){
+  const cid=c.id??'?';
+  if(!('metric' in c)){F('MT010',cid,`“${c.text||''}” names no metric`);continue;}
+  const m=metrics[c.metric],q=questions[c.question],role=c.role;
+  if(!m)F('MT001',cid,`unknown metric \`${c.metric}\``);
+  if(!q)F('MT001',cid,`unknown question \`${c.question}\``);
+  if(role==='score'){if(!(c.question in scored))scored[c.question]=cid;if(!order.includes(c.question))order.push(c.question);}
+  if(c.owner&&!(c.owner in prof.owners))F('MT001',cid,`unknown owner \`${c.owner}\``);
+  if(!m||!q)continue;
+  const rul=[...(m.rulings||[]),...(q.rulings||[])];
+  if(!m.roles_allowed.includes(role))F('MT060',cid,`\`${m.id}\` may be ${m.roles_allowed.join(', ')}, not ${role}`,rul);
+  const p=(q.prohibited||[]).find(p=>p.metric===m.id);
+  if(p)F('MT020',cid,`\`${m.id}\` is prohibited on \`${q.id}\`: ${p.reason||''}`,rul);
+  else{const assigned={score:[q.score],companion:q.companions,diagnostic:q.diagnostics||[],context:[m.id]};
+   if(!(assigned[role]||[]).includes(m.id))F('MT020',cid,`\`${m.id}\` is not the ${role} for \`${q.id}\``+(role==='score'?`; the score is \`${q.score}\``:''),rul);}
+  const w=c.window;
+  if(!(w in prof.windows))F('MT001',cid,`unknown window \`${w}\``);
+  else if(!m.windows.includes(w)||(q.windows&&q.windows.length&&!q.windows.includes(w)))F('MT040',cid,`window \`${w}\` not allowed for \`${m.id}\` on \`${q.id}\``,rul);
+  const b=c.benchmark;
+  if(!(b in prof.benchmarks))F('MT001',cid,`unknown benchmark \`${b}\``);
+  else{const on=prof.benchmarks[b].allowed_on_surfaces;
+   if(!m.benchmarks.includes(b))F('MT041',cid,`benchmark \`${b}\` not allowed for \`${m.id}\`; allowed: ${m.benchmarks.join(', ')}`,rul);
+   else if(on!=null&&!on.includes(surface))F('MT041',cid,`benchmark \`${b}\` is not allowed on surface \`${surface}\``,rul);}
+  for(const other of c.compares_with||[]){
+   if(!(other in metrics)){F('MT001',cid,`unknown metric \`${other}\` in compares_with`);continue;}
+   const e=denied[[m.id,other].sort().join('|')];
+   if(e)F('MT050',cid,`\`${m.id}\` vs \`${other}\`: ${e.reason||'denied comparison'}`,rul);}
+ }
+ const expected=man.questions.filter(q=>q.surface===surface).sort((a,b)=>a.order-b.order).map(q=>q.id);
+ if(prof.surfaces[surface].closed){
+  const got=order,sg=new Set(got),se=new Set(expected);
+  if(got.length!==expected.length||got.some(x=>!se.has(x))||expected.some(x=>!sg.has(x))){
+   const missing=expected.filter(x=>!sg.has(x)),extra=got.filter(x=>!se.has(x));
+   F('MT030',null,`closed surface \`${surface}\` expects ${expected.length} scored questions, got ${got.length}`+(missing.length?`; missing [${missing.join(', ')}]`:'')+(extra.length?`; extra [${extra.join(', ')}]`:''));}
+  else if(got.join()!==expected.join())F('MT030',null,`scored questions out of order: [${got.join(', ')}]`);}
+ for(const [qid,cid] of Object.entries(scored)){
+  const q=questions[qid];if(!q)continue;
+  const present=new Set((pack.claims||[]).filter(c=>c.role==='companion').map(c=>c.question+'|'+c.metric));
+  for(const comp of q.companions)if(!present.has(qid+'|'+comp))F('MT021',cid,`\`${qid}\` scored without its companion \`${comp}\``,q.rulings||[]);}
+ return out;}
+
+/* ================= game state ================= */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const stage=$('#stage'),M=Object.fromEntries(METRICS.map(m=>[m.id,m])),Q=QUESTIONS.find(q=>q.id===QID);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let state={score:null,companion:null},done=false,sel=null,cards=[],termHold=0;
+const claimOf=(role,s)=>{const c={id:CARDS[s.m].cid,owner:M[s.m].owner,text:CARDS[s.m].text,metric:s.m,question:QID,role};
+ if(s.window)c.window=s.window;if(s.benchmark)c.benchmark=s.benchmark;if(s.cmp)c.compares_with=[s.cmp];return c;};
+const buildPack=st=>({surface:SURF,claims:[...['score','companion'].filter(r=>st[r]).map(r=>claimOf(r,st[r])),...HIDDEN]});
+const pending=f=>f.code==='MT001'&&/`undefined`/.test(f.message); // fields the player has not picked yet
+const strip=s=>s.replace(/`/g,'');
+
+/* ---------- static scaffolding ---------- */
+$('#master').textContent=PROFILE.surfaces[SURF].label;
+$('#qs').innerHTML=QUESTIONS.map(q=>`<div class="qc ${q.id===QID?'me':'lit'}" data-q="${q.id}" style="--cc:${PROFILE.owners[M[q.score].owner].color}"><i>${q.id===QID?'○':'✓'}</i>${q.label}</div>`).join('');
+$('#q').textContent=Q.label;
+$('#spots').innerHTML=Object.keys(CARDS).map(id=>`<div class="spot" data-m="${id}"></div>`).join('');
+function cardHTML(id){const m=M[id],o=PROFILE.owners[m.owner];
+ return `<div class="card" data-m="${id}" tabindex="0" role="button" style="--cc:${o.color}"><span class="hd" style="--c:${o.color}"><b>${o.label.toUpperCase()}</b><i><u></u><u></u></i></span><div class="lb">${m.label}</div><div class="cl">${CARDS[id].text}</div><div class="mt"></div><span class="tag">CONTEXT</span></div>`;}
+
+/* ---------- geometry ---------- */
+const rectIn=el=>{const r=el.getBoundingClientRect(),s=stage.getBoundingClientRect();return {x:r.left-s.left,y:r.top-s.top,w:r.width,h:r.height};};
+function setXY(c,x,y){c._x=x;c._y=y;c.style.transform=`translate(${x}px,${y}px)`;}
+function moveTo(c,el){const r=rectIn(el);setXY(c,r.x+(r.w-c.offsetWidth)/2,r.y+(r.h-c.offsetHeight)/2);}
+const homeOf=c=>$(`.spot[data-m="${c.dataset.m}"]`);
+const slotOf=c=>{for(const r in state)if(state[r]&&state[r].card===c)return $(`.slot[data-role="${r}"]`);return null;};
+function settle(){cards.forEach(c=>{if(c===dragging)return;const s=slotOf(c);moveTo(c,s||homeOf(c));});drawGuides();}
+function drawGuides(){
+ const svg=$('#links'),tr=stage.getBoundingClientRect();svg.setAttribute('viewBox',`0 0 ${tr.width} ${tr.height}`);
+ const me=rectIn($('.qc.me')),q=rectIn($('#q'));let h='';
+ const x0=me.x+me.w/2,x1=q.x+q.w/2;
+ const S=(xa,ya,xb,yb)=>{const ym=(ya+yb)/2;return `<path d="M ${xa} ${ya} C ${xa} ${ym} ${xb} ${ym} ${xb} ${yb}"/>`;};
+ h+=S(x0,me.y+me.h+6,x1,q.y-6);
+ $$('.slot').forEach(s=>{const r=rectIn(s),x=r.x+r.w/2;h+=S(x1,q.y+q.h+6,x,r.y-6)+`<circle cx="${x}" cy="${r.y-6}" r="2.5"/>`;});
+ svg.innerHTML=h;}
+
+/* ---------- drag, tap, keyboard ---------- */
+let dragging=null,drag=null;
+function bindCard(c){
+ c.addEventListener('pointerdown',e=>{if(done)return;hideStamp();c.setPointerCapture(e.pointerId);dragging=c;drag={x0:e.clientX,y0:e.clientY,ox:c._x,oy:c._y,moved:false};c.classList.add('lift');});
+ c.addEventListener('pointermove',e=>{if(dragging!==c)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0;if(Math.hypot(dx,dy)>6)drag.moved=true;
+  setXY(c,drag.ox+dx,drag.oy+dy);const s=slotAt(e.clientX,e.clientY);$$('.slot').forEach(x=>x.classList.toggle('over',x===s&&!x.classList.contains('full')));});
+ const end=e=>{if(dragging!==c)return;c.classList.remove('lift');$$('.slot').forEach(x=>x.classList.remove('over'));dragging=null;
+  if(!drag.moved){select(sel===c?null:c);settle();return;}
+  select(null);const s=e.type==='pointerup'?slotAt(e.clientX,e.clientY):null;
+  if(s)tryDrop(c,s);else release(c);};
+ c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);
+ c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(sel===c?null:c);}});}
+function slotAt(x,y){return $$('.slot').find(s=>{const r=s.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;})||null;}
+function select(c){sel=c;cards.forEach(x=>x.classList.toggle('sel',x===c));}
+$$('.slot').forEach(s=>{const go=()=>{if(sel&&!done){const c=sel;select(null);tryDrop(c,s);}};
+ s.addEventListener('click',go);s.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+function release(c){ // dropped outside any slot: leave whatever slot it held
+ for(const r in state)if(state[r]&&state[r].card===c){state[r]=null;$(`.slot[data-role="${r}"]`).classList.remove('full');}
+ c.classList.remove('def','ok','bad');settle();render();}
+
+/* ---------- drop: the linter decides ---------- */
+function tryDrop(c,slot){
+ const role=slot.dataset.role;$('#hint').style.opacity=0;
+ if(state[role]&&state[role].card!==c){release(c);return;}
+ const st={...state};for(const r in st)if(st[r]&&st[r].card===c)st[r]=null;
+ st[role]={card:c,m:c.dataset.m};
+ const all=lint(buildPack(st),MAN),bad=all.filter(f=>f.claim===CARDS[c.dataset.m].cid&&(f.code==='MT020'||f.code==='MT060'));
+ if(bad.length){ // rejected on role: bounce back, show the code and the ruling
+  release(c);c.classList.add('shake');setTimeout(()=>c.classList.remove('shake'),800);
+  slot.classList.add('no');setTimeout(()=>slot.classList.remove('no'),700);
+  const f=bad.find(f=>f.code==='MT020')||bad[0],b=slot.querySelector('.badge');
+  b.innerHTML=`<b>${f.code}</b>${strip(f.message)}`;b.classList.add('in');setTimeout(()=>b.classList.remove('in'),3400);
+  if(c.dataset.m==='sales.units')c.classList.add('ctx');
+  stamp(f,st[role]);showTerm(all.filter(f=>!pending(f)));termHold=Date.now()+3000;setTimeout(render,3100);return;}
+ for(const r in state)if(state[r]&&state[r].card===c){state[r]=null;$(`.slot[data-role="${r}"]`).classList.remove('full');}
+ state[role]=st[role];slot.classList.add('full');settle();render();}
+
+/* ---------- define: two taps, the linter answers each one ---------- */
+function pick(role,key,val){const s=state[role];if(!s)return;
+ if(key==='cmp')s.cmp=s.cmp?null:val;else s[key]=val;
+ render();
+ const f=lint(buildPack(state),MAN).find(f=>f.claim===CARDS[s.m].cid&&!pending(f));
+ if(f)stamp(f,s);else hideStamp();}
+function defHTML(role,s,fs){
+ const cid=CARDS[s.m].cid,mine=fs.filter(f=>f.claim===cid&&!pending(f)),f=mine[0];
+ const probe=(key,val)=>{const st={...state,[role]:{...s,[key]:val}};return !lint(buildPack(st),MAN).some(x=>x.claim===cid&&(x.code==='MT040'||x.code==='MT041'||x.code==='MT050')&&x.message.includes(`\`${val}\``));};
+ const chips=(key,opts,lab)=>{const curBad=s[key]&&!probe(key,s[key]); // after a wrong pick, the valid chips glow
+  return opts.map(o=>{const on=s[key]===o,ok=probe(key,o);
+   return `<button class="chip ${on?(ok?'on':'bad'):(ok&&curBad?'hint':'')}" data-k="${key}" data-v="${o}">${lab(o)}</button>`;}).join('');};
+ const other=s.m===Q.score?Q.companions[0]:Q.score;
+ const stTxt=f?`<b>${f.code}</b>${strip(f.message)}`:(s.window&&s.benchmark?`✓ ${cid} · ${CARDS[s.m].text}`:'…');
+ return `<div class="st ${f?'bad':(s.window&&s.benchmark?'ok':'')}">${stTxt}</div>
+ <div class="row"><span class="k">Window</span>${chips('window',WIN_OPTS,o=>PROFILE.windows[o].label)}</div>
+ <div class="row"><span class="k">Benchmark</span>${chips('benchmark',BM_OPTS,o=>PROFILE.benchmarks[o].label)}</div>
+ <div class="row"><span class="k">Compare</span><button class="chip ${s.cmp?'bad':''}" data-k="cmp" data-v="${other}">⇄ vs. ${M[other].label}</button></div>`;}
+$$('.def').forEach((d,i)=>d.addEventListener('click',e=>{const b=e.target.closest('.chip');if(b&&!done)pick(['score','companion'][i],b.dataset.k,b.dataset.v);}));
+
+/* ---------- render everything from state ---------- */
+function render(){
+ const fs=lint(buildPack(state),MAN),live=fs.filter(f=>!pending(f));
+ ['score','companion'].forEach((role,i)=>{const s=state[role],slot=$(`.slot[data-role="${role}"]`),d=$$('.def')[i];
+  slot.classList.toggle('need',!s&&role==='companion'&&live.some(f=>f.code==='MT021'));
+  if(!s){d.hidden=true;return;}
+  d.hidden=false;d.innerHTML=defHTML(role,s,fs);
+  const c=s.card,cid=CARDS[s.m].cid,mine=live.filter(f=>f.claim===cid),full=s.window&&s.benchmark;
+  c.classList.toggle('def',!!full);c.classList.toggle('bad',mine.length>0);c.classList.toggle('ok',!!full&&!mine.length);
+  c.querySelector('.mt').textContent=full?`${PROFILE.windows[s.window].label} · ${PROFILE.benchmarks[s.benchmark].label}`:'';});
+ if(Date.now()>=termHold)showTerm(live);
+ const clean=state.score&&state.companion&&live.length===0&&fs.length===0;
+ if(clean&&!done)finish();}
+function showTerm(fs){
+ const n=buildPack(state).claims.length;
+ $('#term').innerHTML=`<div class="p">$ <b>supreme lint</b> pack.yaml</div>`+
+  (fs.length?fs.slice(0,5).map(f=>`<div class="f"><b>${f.code}</b> ${f.claim?f.claim+' · ':''}${strip(f.message)}</div>`).join('')+(fs.length>5?`<div class="w">… ${fs.length-5} more</div>`:'')
+   :`<div class="ok">✓ ${n} claims · 0 findings</div>`)+
+  `<div class="x">exit ${fs.length?1:0}</div>`;}
+
+/* ---------- ruling stamp ---------- */
+let stampT=0;
+function stamp(f,s){
+ const ids=new Set([...f.rulings,...RULINGS.filter(r=>r.applies_to.includes(SURF)).map(r=>r.id)]);
+ const cands=RULINGS.filter(r=>ids.has(r.id));
+ const key=(f.code==='MT041'?PROFILE.benchmarks[s.benchmark].label:f.code==='MT040'?PROFILE.windows[s.window].label:M[s.m].label).toLowerCase().split(/[\s,]+/)[0];
+ let r=cands.find(r=>r.statement.toLowerCase().includes(key));
+ if(!r&&f.code!=='MT040')r=cands.find(r=>r.applies_to.includes(s.m));
+ if(!r){hideStamp();return;}
+ const el=$('#stamp');el.innerHTML=`<div class="k">Ruling · ${r.date} · ${PROFILE.owners[r.owner].label}</div><p>${r.statement}</p>`;
+ el.classList.add('in');clearTimeout(stampT);stampT=setTimeout(hideStamp,3600);}
+function hideStamp(){$('#stamp').classList.remove('in');}
+
+/* ---------- finale ---------- */
+function finish(){done=true;
+ cards.forEach(c=>{if(!slotOf(c))c.classList.add('ctx');});
+ setTimeout(()=>{stage.classList.add('done');$('.qc.me').classList.add('lit');$('.qc.me i').textContent='✓';},RM?0:500);}
+
+/* ---------- start / replay ---------- */
+function start(){
+ done=false;sel=null;termHold=0;state={score:null,companion:null};stage.classList.remove('done');hideStamp();
+ cards.forEach(c=>c.remove());cards=[];
+ $$('.slot').forEach(s=>s.classList.remove('full','need','no'));$$('.def').forEach(d=>d.hidden=true);
+ const me=$('.qc.me');me.classList.remove('lit');me.querySelector('i').textContent='○';
+ $('#hint').style.opacity=1;
+ Object.keys(CARDS).forEach((id,i)=>{const w=document.createElement('div');w.innerHTML=cardHTML(id);const c=w.firstChild;stage.appendChild(c);cards.push(c);bindCard(c);
+  c.style.animationDelay=(i*.18)+'s';c.classList.add('in');setTimeout(()=>c.classList.remove('in'),1400);});
+ settle();render();}
+$('#replay').onclick=start;
+addEventListener('resize',settle);
+start();
+</script>
