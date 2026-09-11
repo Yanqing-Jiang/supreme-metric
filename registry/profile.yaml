@@ -27,7 +27,7 @@ benchmarks:
   vs_target:        {label: vs. target}
   vs_target_band:   {label: vs. target band}
   vs_prior_quarter: {label: vs. prior quarter}
-  level:            {label: Level only, no comparison}
+  level:            {label: "Level only, no comparison"}
   # Defined so a claim can name it and be rejected on the leadership surface.
   wow:              {label: Week over week, allowed_on_surfaces: []}
 display:

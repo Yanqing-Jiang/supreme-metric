@@ -15,6 +15,12 @@ REQUIRED = {
     "ruling": ("id", "date", "owner", "statement", "applies_to"),
     "profile": ("spec_version", "owners", "surfaces", "windows", "benchmarks"),
 }
+TOP_LEVEL = {
+    "profile": {"spec_version", "name", "owners", "surfaces", "windows", "benchmarks", "display"},
+    "metric": {"id", "label", "definition", "owner", "universe", "grain", "roles_allowed", "windows", "benchmarks", "not_comparable_with", "reason_codes", "freshness_expectation", "impl_ref", "rulings"},
+    "question": {"id", "label", "purpose", "surface", "order", "score", "companions", "diagnostics", "prohibited", "windows", "verdicts", "rulings"},
+    "ruling": {"id", "date", "owner", "statement", "applies_to", "supersedes", "source"},
+}
 
 
 class CompileError(Exception):
@@ -31,9 +37,31 @@ def digest(obj) -> str:
     return "sha256:" + hashlib.sha256(canonical(obj).encode()).hexdigest()
 
 
-def _read(path: Path):
-    with path.open() as fh:
-        return yaml.safe_load(fh) or {}
+class _UniqueLoader(yaml.SafeLoader):
+    pass
+
+
+def _unique_mapping(loader, node, deep=False):
+    mapping = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if key in mapping:
+            raise yaml.constructor.ConstructorError("while constructing a mapping", node.start_mark, f"duplicate key `{key}`", key_node.start_mark)
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+_UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _unique_mapping)
+
+
+def read_yaml(path: Path):
+    try:
+        with path.open() as fh:
+            return yaml.load(fh, Loader=_UniqueLoader) or {}
+    except yaml.YAMLError as exc:
+        mark = getattr(exc, "problem_mark", None)
+        where = f":{mark.line + 1}:{mark.column + 1}" if mark else ""
+        raise CompileError([f"{path}{where}: malformed YAML: {getattr(exc, 'problem', str(exc))}"]) from None
 
 
 def load_registry(root: Path) -> dict:
@@ -44,12 +72,21 @@ def load_registry(root: Path) -> dict:
 
     def track(path: Path):
         sources[path.relative_to(root).as_posix()] = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
-        return _read(path)
+        return read_yaml(path)
 
     profile = track(root / "profile.yaml")
-    metrics, questions, rulings = [], [], []
+    metrics, questions, rulings, document_errors = [], [], [], []
     for path in sorted((root / "metrics").glob("*.yaml")):
         doc = track(path)
+        if not isinstance(doc, dict):
+            document_errors.append(f"{path.relative_to(root)}: metrics file must be a mapping")
+            continue
+        for key in doc:
+            if key != "metrics":
+                document_errors.append(f"{path.relative_to(root)}: unknown top-level key `{key}`")
+        if "metrics" not in doc or not isinstance(doc["metrics"], list):
+            document_errors.append(f"{path.relative_to(root)}: `metrics` must be a list")
+            continue
         for m in doc.get("metrics", []):
             m["_source"] = path.relative_to(root).as_posix()
             metrics.append(m)
@@ -61,24 +98,40 @@ def load_registry(root: Path) -> dict:
         r = track(path)
         r["_source"] = path.relative_to(root).as_posix()
         rulings.append(r)
-    return {"profile": profile, "metrics": metrics, "questions": questions, "rulings": rulings, "sources": sources}
+    return {"profile": profile, "metrics": metrics, "questions": questions, "rulings": rulings, "sources": sources, "document_errors": document_errors}
 
 
 def validate(reg: dict) -> list[str]:
     errs: list[str] = []
+    errs.extend(reg.get("document_errors", []))
     prof = reg["profile"]
+    if not isinstance(prof, dict):
+        return ["profile.yaml: expected a mapping"]
+    for key in prof:
+        if key not in TOP_LEVEL["profile"]:
+            errs.append(f"profile.yaml: unknown top-level key `{key}`")
     for f in REQUIRED["profile"]:
         if f not in prof:
             errs.append(f"profile.yaml: missing `{f}`")
     if errs:
         return errs
+    if prof["spec_version"] != SPEC_VERSION:
+        errs.append(f"profile.yaml: unsupported spec_version `{prof['spec_version']}` (supported: {SPEC_VERSION})")
+    if not all(isinstance(prof[x], dict) for x in ("owners", "surfaces", "windows", "benchmarks")):
+        return errs + ["profile.yaml: owners, surfaces, windows, and benchmarks must be mappings"]
     owners, surfaces = set(prof["owners"]), set(prof["surfaces"])
     windows, benchmarks = set(prof["windows"]), set(prof["benchmarks"])
     for wid, w in prof["windows"].items():
-        if w.get("kind") not in ("flow", "snapshot"):
+        if not isinstance(w, dict) or w.get("kind") not in ("flow", "snapshot"):
             errs.append(f"profile.yaml: window `{wid}` needs kind flow or snapshot")
 
     def need(kind, obj):
+        if not isinstance(obj, dict):
+            errs.append(f"{kind}: expected a mapping")
+            return False
+        for key in obj:
+            if key not in TOP_LEVEL[kind] and key != "_source":
+                errs.append(f"{obj.get('_source', kind)}: {kind} `{obj.get('id', '?')}` unknown top-level key `{key}`")
         missing = [f for f in REQUIRED[kind] if f not in obj]
         if missing:
             errs.append(f"{obj.get('_source')}: {kind} `{obj.get('id', '?')}` missing {', '.join(missing)}")
@@ -165,6 +218,22 @@ def validate(reg: dict) -> list[str]:
         for rid in m.get("rulings", []):
             if rid not in rulings:
                 errs.append(f"{m['_source']}: metric `{m['id']}` cites unknown ruling `{rid}`")
+    references = set(metrics) | set(questions) | set(surfaces) | set(windows) | set(benchmarks) | set(owners)
+    for r in rulings.values():
+        applies = r.get("applies_to", [])
+        if not isinstance(applies, list):
+            errs.append(f"{r['_source']}: ruling `{r['id']}` applies_to must be a list")
+            continue
+        for reference in applies:
+            if reference not in references:
+                errs.append(f"{r['_source']}: ruling `{r['id']}` applies_to unknown reference `{reference}`")
+    for bid, benchmark in prof["benchmarks"].items():
+        if not isinstance(benchmark, dict):
+            errs.append(f"profile.yaml: benchmark `{bid}` must be a mapping")
+            continue
+        for surface in benchmark.get("allowed_on_surfaces", []):
+            if surface not in surfaces:
+                errs.append(f"profile.yaml: benchmark `{bid}` allowed_on_surfaces unknown surface `{surface}`")
     return errs
 
 

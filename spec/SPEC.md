@@ -54,6 +54,8 @@ Append-only. The checked-in registry is authoritative; rulings are evidence for 
 
 `supreme compile <registry>` validates every reference, derives edges (`scores`, `companion_of`, `diagnoses`, `prohibited`, `not_comparable_with`), and emits `topology.json` with a `topology_digest`: sha256 over the canonical JSON of the manifest body (sorted keys, no whitespace). Two compiles of the same files on any machine produce the same digest.
 
+Authored documents use `spec_version: 1`; unknown top-level keys and duplicate identifiers are rejected. Ruling `applies_to` and benchmark `allowed_on_surfaces` references must resolve in the profile or registry. Published Draft 2020-12 schemas in `schema/` make the same document shapes independently checkable with `supreme validate`.
+
 ## Claim pack
 
 ```yaml
@@ -71,6 +73,8 @@ claims:
 | MT010 | claim names no metric |
 | MT020 | metric is not assigned that role for that question, or is prohibited there |
 | MT021 | question scored without a required companion |
+| MT022 | question scored more than once in one pack |
+| MT023 | claim's question is not on the pack surface |
 | MT030 | closed surface: wrong count or order of scored questions |
 | MT040 | window not allowed for the metric or question |
 | MT041 | benchmark not allowed for the metric or on the surface |
@@ -79,3 +83,11 @@ claims:
 | MT070 | pack digest does not match the manifest |
 
 Severity is `error` or `warning`. The CLI exits non-zero on any error.
+
+## Implementation evidence
+
+`impl_ref` is evidence of an implementation, not proof of a result. Databricks references use `catalog.schema.view#measure`; each identifier component is quoted independently when inspected. `supreme sync databricks` fingerprints canonical JSON containing the reference and the complete parsed metric-view YAML as `dbmv-v1:sha256:<hex>`. A matching approved fingerprint is `verified`; a readable mismatch or missing measure is `drifted`; unbaselined, denied, incomplete, or unsupported metadata is `unverifiable`. Sync is read-only and never accepts a baseline automatically.
+
+## Annotated reports
+
+`supreme pack` reads YAML front matter containing `surface` and ordered fenced `supreme-claim` YAML blocks. It requires unique claim IDs, carries block `text`, records `{path, line}` source data, and pins the compiled topology digest. It intentionally does not infer claims from prose.

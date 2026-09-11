@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://supreme-metric.dev/schema/question.schema.json", "type": "object", "additionalProperties": false,
+  "required": ["id", "label", "purpose", "surface", "order", "score", "companions"],
+  "properties": {
+    "id": {"type": "string"}, "label": {"type": "string"}, "purpose": {"type": "string"}, "surface": {"type": "string"}, "order": {"type": "integer", "minimum": 1}, "score": {"type": "string"}, "companions": {"type": "array", "items": {"type": "string"}}, "diagnostics": {"type": "array", "items": {"type": "string"}},
+    "prohibited": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["metric", "reason"], "properties": {"metric": {"type": "string"}, "reason": {"type": "string"}}}}, "windows": {"type": "array", "items": {"type": "string"}}, "verdicts": {"type": "object", "additionalProperties": false, "properties": {"up": {"type": "string"}, "down": {"type": "string"}, "flat": {"type": "string"}}}, "rulings": {"type": "array", "items": {"type": "string"}}
+  }
+}

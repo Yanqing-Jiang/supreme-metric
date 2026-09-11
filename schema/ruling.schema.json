@@ -1,0 +1,4 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://supreme-metric.dev/schema/ruling.schema.json", "type": "object", "additionalProperties": false,
+  "required": ["id", "date", "owner", "statement", "applies_to"], "properties": {"id": {"type": "string"}, "date": {"type": "string", "format": "date"}, "owner": {"type": "string"}, "statement": {"type": "string"}, "applies_to": {"type": "array", "items": {"type": "string"}}, "supersedes": {"type": "string"}, "source": {"type": "string"}}
+}

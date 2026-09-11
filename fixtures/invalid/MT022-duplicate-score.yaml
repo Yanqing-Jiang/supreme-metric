@@ -1,0 +1,4 @@
+surface: weekly_leadership
+claims:
+  - {id: first, metric: sales.net_sales_consumption, question: growing, role: score, window: p4w, benchmark: iya}
+  - {id: second, metric: sales.net_sales_consumption, question: growing, role: score, window: p4w, benchmark: iya}

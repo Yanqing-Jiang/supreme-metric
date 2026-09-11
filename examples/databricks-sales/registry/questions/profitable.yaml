@@ -1,0 +1,8 @@
+id: profitable
+label: Are we growing profitably?
+purpose: Decide whether margin supports growth.
+surface: weekly_leadership
+order: 2
+score: sales.margin
+companions: [sales.returns]
+rulings: [RULING-002-MARGIN]

@@ -1,0 +1,41 @@
+metrics:
+  - id: sales.revenue
+    label: Revenue
+    definition: Net sales from the approved metric view.
+    owner: sales
+    universe: sell_out
+    grain: week
+    roles_allowed: [score]
+    windows: [p4w]
+    benchmarks: [year_ago]
+    impl_ref: {adapter: databricks, ref: sales_gold.leadership.revenue#revenue}
+  - id: sales.orders
+    label: Orders
+    definition: Completed orders from the approved metric view.
+    owner: sales
+    universe: sell_out
+    grain: week
+    roles_allowed: [companion]
+    windows: [p4w]
+    benchmarks: [year_ago]
+    impl_ref: {adapter: databricks, ref: sales_gold.leadership.revenue#orders}
+  - id: sales.margin
+    label: Margin
+    definition: Contribution margin from the approved metric view.
+    owner: sales
+    universe: finance
+    grain: week
+    roles_allowed: [score]
+    windows: [p4w]
+    benchmarks: [year_ago]
+    impl_ref: {adapter: databricks, ref: sales_gold.leadership.margin#margin}
+  - id: sales.returns
+    label: Returns
+    definition: Returns rate from the approved metric view.
+    owner: sales
+    universe: sell_out
+    grain: week
+    roles_allowed: [companion]
+    windows: [p4w]
+    benchmarks: [year_ago]
+    impl_ref: {adapter: databricks, ref: sales_gold.leadership.margin#returns}

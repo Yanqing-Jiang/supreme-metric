@@ -1,14 +1,18 @@
 <p align="center"><img src="docs/banner.svg" alt="Supreme Metric" width="100%"></p>
 
-<p align="center"><b>A spec and a linter for governed metric topology.</b><br>
-Which metric may answer which question, in what role, on what surface, against what benchmark.<br>
-It never computes a number. It decides whether a number is allowed to speak.</p>
+<p align="center"><b>One metric per question sits above the rest.</b><br>
+Supreme Metric is the standard a number has to pass before it is allowed to answer a business question.<br>
+It never computes a number. It decides whether a number may speak.</p>
 
-<p align="center"><code>pipx install supreme-metric</code> · <code>supreme compile</code> · <code>supreme lint</code></p>
+<p align="center">
+<a href="https://yanqing.app/supreme-metric"><b>See it in motion</b></a> ·
+<a href="AGENTS.md"><b>Stand it up with an agent</b></a> ·
+<a href="spec/SPEC.md">Read the spec</a>
+</p>
 
 ---
 
-## Eight claims walk into a meeting
+## The meeting
 
 > **SALES** · Sales are up 14%. · Share is up 1.8 pts.
 > **FINANCE** · Margin is flat. · Forecast says a softer Q4.
@@ -17,7 +21,15 @@ It never computes a number. It decides whether a number is allowed to speak.</p>
 
 Every claim is true. Every claim is reproducible. Nobody can answer *"How's my business performance?"*
 
-Supreme Metric gives each question exactly one metric that carries the verdict, the **score**. Every other number is a **companion** or a **diagnostic**. Owners, windows, benchmarks, and the pairs that must never be compared are written down once, in YAML, in git. A linter checks every claim against that before it reaches a page.
+Now the same eight claims arrive from an AI assistant, in a second, with confidence. The problem did not go away. It got faster.
+
+## Three rules
+
+1. **Every question has one score.** One metric carries the verdict. Every other number is a companion or a diagnostic. It may explain the verdict; it may not recolor it.
+2. **Every answer is reviewed before it ships.** A page lists the numbers it wants to show. A linter checks each one against the standard. A number that fails does not appear.
+3. **Every metric has one owner.** Somebody signs the definition and explains the number. Changing it is a pull request that the owner approves.
+
+That is the whole product. The rules live in a folder of small YAML files, in git, next to your code.
 
 ## The tree
 
@@ -52,131 +64,79 @@ flowchart TD
   classDef logistics fill:#331510,stroke:#FF4D2E,color:#F2EFE8
 ```
 
-Thick line: the score. Dotted line: the sibling. Color: the owner of the verdict. This picture is not drawn by hand; it is what `supreme compile` derives from the seven question files in [`registry/questions/`](registry/questions).
+Thick line: the score. Dotted line: the companion. Color: the team that owns the verdict. Nothing here is drawn by hand. `supreme compile` derives it from the seven question files in [`registry/questions/`](registry/questions).
 
-## Three files
+## Stand it up with an agent
 
-<table>
-<tr><th>question</th><th>metric</th><th>ruling</th></tr>
-<tr><td>
+You do not have to learn the file formats. Point a coding agent at this repo and let it do the authoring while you approve the meaning.
 
-```yaml
-# registry/questions/growing.yaml
-id: growing
-label: Are we growing?
-surface: weekly_leadership
-order: 1
-score: sales.net_sales_consumption
-companions: [finance.net_sales_shipped]
-prohibited:
-  - metric: sales.units
-    reason: Units are not a leadership metric
-```
+Paste this into Claude Code, Codex, Cursor, or the Databricks Assistant:
 
-</td><td>
+> Read `AGENTS.md` in https://github.com/Yanqing-Jiang/supreme-metric and stand up Supreme Metric as the metric-topology layer for my **sales team** on **Azure Databricks**. Databricks CLI profile `sales`, SQL warehouse `<id>`, catalog `<catalog>`, schema `<schema>`. Start with one business question. Ask me before you name an owner, pick a score metric, or approve a fingerprint.
 
-```yaml
-# registry/metrics/sales.yaml
-- id: sales.net_sales_consumption
-  label: Net sales, consumption
-  owner: sales
-  universe: retailer_sell_out
-  grain: week x bu
-  roles_allowed: [score, companion]
-  windows: [p4w, fytd]
-  benchmarks: [iya]
-  not_comparable_with:
-    - metric: finance.net_sales_shipped
-```
-
-</td><td>
-
-```yaml
-# registry/rulings/finance/
-#   RULING-2026-07-01-....yaml
-id: RULING-2026-07-01-CONSUMPTION-IS-GROWTH
-date: 2026-07-01
-owner: finance
-statement: Growth is consumption.
-  Shipped sales sit beside it and
-  are never netted against it.
-applies_to: [growing]
-```
-
-</td></tr>
-</table>
-
-A `profile.yaml` names your vocabulary: owners, surfaces, windows, benchmarks. Nothing in the tool knows what `p4w` or `iya` means. Nothing in the tool knows there are seven questions.
-
-## Five minutes
-
-```bash
-git clone https://github.com/Yanqing-Jiang/supreme-metric && cd supreme-metric
-pipx install .                                  # or: pip install -e ".[dev]"
-
-supreme compile registry --out dist/topology.json
-# ✓ reference-sales-org: 7 questions, 16 metrics, 19 edges, 7 rulings
-#   sha256:…  →  dist/topology.json
-
-supreme lint fixtures/clean/pack.yaml --topology dist/topology.json
-# ✓ 14 claims, 0 error(s), 0 warning(s)
-
-supreme lint fixtures/invalid/MT041-wow-benchmark.yaml --topology dist/topology.json
-# MT041 error   claim c1   benchmark `wow` not allowed for `sales.net_sales_consumption`; allowed: iya  [RULING-…]
-# ✗ 14 claims, 1 error(s), 0 warning(s)
-```
-
-A **claim pack** is what you lint. One entry per number a report wants to show:
-
-```yaml
-surface: weekly_leadership
-claims:
-  - {id: c1, owner: sales, text: Sales are up 14%.,
-     metric: sales.net_sales_consumption, question: growing, role: score, window: p4w, benchmark: iya}
-```
-
-| code | the claim is rejected because |
+| The agent does | You approve |
 |---|---|
-| `MT010` | it names no metric |
-| `MT020` | its metric is not the score, companion, or diagnostic for that question |
-| `MT021` | the question was scored without its required companion |
-| `MT030` | a closed surface got the wrong count or order of scored questions |
-| `MT040` / `MT041` | the window or benchmark is not allowed there |
-| `MT050` | it compares two metrics a ruling says are not comparable |
-| `MT060` | the metric may never play that role |
-| `MT070` | the pack was pinned to a different compile |
+| Lists the tables and metric views it is allowed to see | The question to start with |
+| Proposes metrics grounded in what exists, with definition, grain, window, benchmark | Who owns each metric |
+| Drafts the question, its score and companion, and the ruling that says why | The score and companion assignment |
+| Compiles, validates, wires CODEOWNERS and CI, emits and lints the first report | The implementation fingerprint that becomes the baseline |
 
-Every code has one fixture in [`fixtures/invalid/`](fixtures/invalid) that must keep failing. CI runs them all.
+The agent never invents a metric without a source, never assigns two scores to one question, and never blesses a live definition without you. The rules it follows are in [`AGENTS.md`](AGENTS.md). The step-by-step runbook is in [`docs/agent-standup.md`](docs/agent-standup.md), with the Azure Databricks specifics in [`docs/azure-databricks.md`](docs/azure-databricks.md).
 
-## Start yours
+## By hand, five minutes
 
 ```bash
-mkdir -p my-registry/{questions,metrics,rulings}
-cp profiles/minimal.yaml my-registry/profile.yaml   # rename one owner, one surface, one window, one benchmark
+pip install "supreme-metric[schema,databricks] @ git+https://github.com/Yanqing-Jiang/supreme-metric"
+
+git clone https://github.com/Yanqing-Jiang/supreme-metric && cd supreme-metric
+supreme compile registry --out dist/topology.json
+supreme lint fixtures/clean/pack.yaml --topology dist/topology.json
+supreme lint fixtures/invalid/MT041-wow-benchmark.yaml --topology dist/topology.json
 ```
 
-Write one question. Write its two metrics. Write one ruling saying why. Compile.
+The first lint passes. The second fails with one line: a week-over-week benchmark is not allowed on the leadership surface, and here is the ruling that says so.
 
-```bash
-supreme compile my-registry --out dist/mine.json
-```
+## What you get
 
-That is the whole product loop. [`examples/minimal-registry/`](examples/minimal-registry) is that loop, finished, in six small files. Put the registry in git, point `CODEOWNERS` at the owner of each metric file, and a pull request becomes the approval workflow. `impl_ref` on a metric can point at a Databricks metric view or a versioned SQL file; that is optional, and `compile` and `lint` never need credentials.
+**A registry in git.** Three kinds of files and one profile. The profile names your vocabulary: owners, surfaces, windows, benchmarks. Nothing in the tool knows what `p4w` means or how many questions you have.
+
+| file | says |
+|---|---|
+| `questions/<id>.yaml` | one business question, its score metric, its companions, what is prohibited |
+| `metrics/<owner>.yaml` | the metrics one team owns: definition, grain, allowed windows and benchmarks, where it is implemented |
+| `rulings/<owner>/RULING-….yaml` | a dated decision and the reason, append-only |
+
+**One command-line tool.**
+
+| command | does |
+|---|---|
+| `supreme init` | scaffolds a registry from an approved profile |
+| `supreme validate` | checks every file against the published JSON Schemas |
+| `supreme compile` | derives the topology and a digest that pins it |
+| `supreme inspect databricks` | lists tables and metric views in one catalog and schema, read-only |
+| `supreme sync databricks` | verifies each metric's implementation: verified, drifted, or unverifiable |
+| `supreme pack` | turns an annotated Markdown report into a claim pack |
+| `supreme lint` | checks a claim pack and reports findings as text, JSON, or GitHub annotations |
+
+**An approval workflow you already have.** `CODEOWNERS` points at the owner of each metric file. A pull request is the review. CI runs the linter. The ruling is the record.
 
 ## What it is not
 
 **Not Atlan.** No crawler, no lineage, no access control. It catalogs only what a page is allowed to say.
-**Not dbt MetricFlow or Cube.** It does not define joins, compute, cache, or serve a metric.
+**Not dbt MetricFlow or Cube.** It does not define joins, compute, cache, or serve a metric. Databricks stays the semantic layer that computes; Supreme Metric is the topology layer that governs.
 **Not a BI tool.** No charts. It runs before the chart.
 
-## Roadmap
+## Status
 
 | | |
 |---|---|
 | **M1** | spec, neutral profile, reference registry, `supreme compile` with a stable digest ✓ |
-| **M2** | claim-pack linter, ten fixtures, CI, CODEOWNERS flow ✓ |
-| **M3** | `supreme sync databricks`: inspect Unity Catalog metric views, report verified / drifted / unverifiable |
-| **M4** | markdown reader that emits a claim pack; the landing page that renders `dist/topology.json` |
+| **M2** | claim-pack linter, negative fixtures for every finding code, CI, CODEOWNERS flow ✓ |
+| **M3** | `supreme inspect databricks` and `supreme sync databricks`, read-only, fixture-tested ✓ · live smoke test against a real workspace pending |
+| **M4** | `supreme pack` from annotated Markdown ✓ · agent runbook and JSON Schemas ✓ · [landing page](https://yanqing.app/supreme-metric) ✓ |
+| **Next** | dbt metric verification, source locations in every finding, SARIF output |
+
+Sync verifies that a metric view's definition is the one the owner approved. It does not prove the number is right. Nothing here does.
 
 ## License
 

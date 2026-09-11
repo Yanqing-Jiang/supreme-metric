@@ -1,9 +1,12 @@
-# Whoever owns the metric owns the file. Whoever owns the question owns its verdict mapping.
-# Replace the handles with real teams when you fork this.
-/registry/metrics/sales.yaml        @Yanqing-Jiang
-/registry/metrics/finance.yaml      @Yanqing-Jiang
-/registry/metrics/marketing.yaml    @Yanqing-Jiang
-/registry/metrics/logistics.yaml    @Yanqing-Jiang
-/registry/questions/                @Yanqing-Jiang
-/registry/rulings/governance/       @Yanqing-Jiang
-/spec/                              @Yanqing-Jiang
+# Replace handles with the approved teams when this registry is adopted.
+/registry/profile.yaml                 @Yanqing-Jiang
+/registry/metrics/sales.yaml           @Yanqing-Jiang
+/registry/metrics/finance.yaml         @Yanqing-Jiang
+/registry/metrics/marketing.yaml       @Yanqing-Jiang
+/registry/metrics/logistics.yaml       @Yanqing-Jiang
+/registry/questions/                   @Yanqing-Jiang
+/registry/rulings/finance/             @Yanqing-Jiang
+/registry/rulings/governance/          @Yanqing-Jiang
+/registry/rulings/sales/               @Yanqing-Jiang
+/schema/                               @Yanqing-Jiang
+/.github/                              @Yanqing-Jiang

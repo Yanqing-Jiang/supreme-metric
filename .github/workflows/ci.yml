@@ -3,13 +3,19 @@ on: [push, pull_request]
 jobs:
   compile-and-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.12"}
-      - run: pip install -e ".[dev]"
+        with: {python-version: ${{ matrix.python-version }}}
+      - run: pip install -e ".[dev,schema]"
+      - run: supreme validate registry
+      - run: supreme validate examples/minimal-registry
+      - run: supreme validate fixtures/clean/pack.yaml --kind claim-pack
       - run: supreme compile registry --out dist/topology.json
       - run: supreme compile examples/minimal-registry --out dist/minimal.json
-      - run: supreme lint fixtures/clean/pack.yaml --topology dist/topology.json
+      - run: supreme lint fixtures/clean/pack.yaml --topology dist/topology.json --format github
       - run: supreme lint examples/minimal-registry/pack.yaml --topology dist/minimal.json
       - run: pytest -q

@@ -1,0 +1,2 @@
+# Copy into .github/workflows/ci.yml after selecting your repository policy.
+# Install supreme-metric with [dev,schema], validate the registry, compile it, then lint packs.

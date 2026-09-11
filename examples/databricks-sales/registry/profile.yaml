@@ -1,0 +1,10 @@
+spec_version: 1
+name: databricks-sales-example
+owners:
+  sales: {label: Sales}
+surfaces:
+  weekly_leadership: {label: Weekly leadership, cadence: week, closed: true}
+windows:
+  p4w: {label: Past four weeks, kind: flow}
+benchmarks:
+  year_ago: {label: vs. year ago}

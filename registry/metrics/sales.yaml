@@ -14,6 +14,7 @@ metrics:
     impl_ref:
       adapter: databricks
       ref: sales_gold.leadership.net_sales_consumption#net_sales
+      expected_fingerprint: dbmv-v1:sha256:a8dd814ff920b1a6d6b69fe92c233e3324b4a98e92d25a51b674fc2f1b05cac6
     rulings: [RULING-2026-07-01-CONSUMPTION-IS-GROWTH]
 
   - id: sales.market_share
@@ -27,6 +28,10 @@ metrics:
     benchmarks: [pts_vs_ya]
     not_comparable_with:
       - {metric: marketing.search_impression_share, reason: Search universe and panel universe do not reconcile}
+    impl_ref:
+      adapter: databricks
+      ref: sales_gold.leadership.market_share#share
+      expected_fingerprint: dbmv-v1:sha256:0000000000000000000000000000000000000000000000000000000000000000
 
   - id: sales.open_order_backlog
     label: Open order backlog
@@ -37,6 +42,9 @@ metrics:
     roles_allowed: [companion, diagnostic]
     windows: [point_in_time]
     benchmarks: [vs_prior_quarter]
+    impl_ref:
+      adapter: databricks
+      ref: sales_gold.leadership.open_order_backlog#backlog
 
   - id: sales.new_shopper_rate
     label: New shopper rate

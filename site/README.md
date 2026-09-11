@@ -1,7 +1,19 @@
 # site
 
-`govern.html` is the playable second page of the landing site: drag three metrics into "Are we growing?",
-define each with a window and a benchmark, and watch a JS port of `lint.py` accept or reject the claim
-with the same finding codes the CLI emits. The registry embedded in the page is the one in `../registry/`.
+The landing page, also served at https://yanqing.app/supreme-metric.
 
-Open it directly in a browser; it has no build step and no dependencies beyond Google Fonts.
+| file | what |
+|---|---|
+| `index.html` | the page: hero, the question film, the three-step answer film, the three rules, footer |
+| `six-questions-apple.html` | the question film, embedded by `index.html`. Four teams walk out and shout eight true claims; "Govern the metrics" snaps them into one governed topology |
+| `metric-film.html` | the answer film, embedded by `index.html`. Three steps: define the standard, review every metric against it, ship what passes |
+| `govern.html` | an earlier playable page: drag metrics into a question and watch a JS port of the linter accept or reject them. Kept for reference; not linked from the landing page |
+
+No build step. The only external resource is system fonts. Serve the folder over HTTP to view it; `file://` blocks the iframes.
+
+```bash
+python3 -m http.server 8765 --directory site
+open http://localhost:8765/
+```
+
+The films embed the reference registry's questions and metrics as static content. `dist/topology.json` is the authoritative form; rendering the page from it is on the roadmap.

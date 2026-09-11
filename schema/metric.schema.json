@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://supreme-metric.dev/schema/metric.schema.json", "type": "object", "additionalProperties": false,
+  "required": ["id", "label", "definition", "owner", "universe", "grain", "roles_allowed", "windows", "benchmarks"],
+  "properties": {
+    "id": {"type": "string"}, "label": {"type": "string"}, "definition": {"type": "string"}, "owner": {"type": "string"}, "universe": {"type": "string"}, "grain": {"type": "string"},
+    "roles_allowed": {"type": "array", "items": {"enum": ["score", "companion", "diagnostic", "context"]}}, "windows": {"type": "array", "items": {"type": "string"}}, "benchmarks": {"type": "array", "items": {"type": "string"}},
+    "not_comparable_with": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["metric", "reason"], "properties": {"metric": {"type": "string"}, "reason": {"type": "string"}}}},
+    "reason_codes": {"type": "array", "items": {"type": "string"}}, "freshness_expectation": {"type": "string"},
+    "impl_ref": {"type": "object", "additionalProperties": false, "required": ["adapter", "ref"], "properties": {"adapter": {"type": "string"}, "ref": {"type": "string"}, "expected_fingerprint": {"type": "string"}}},
+    "rulings": {"type": "array", "items": {"type": "string"}}
+  }
+}

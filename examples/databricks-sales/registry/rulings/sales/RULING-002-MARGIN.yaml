@@ -1,0 +1,5 @@
+id: RULING-002-MARGIN
+date: 2026-09-11
+owner: sales
+statement: Margin is the score and returns are required context.
+applies_to: [profitable, sales.margin, sales.returns]

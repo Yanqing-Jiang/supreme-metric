@@ -1,0 +1,4 @@
+{
+  "type": "METRIC VIEW",
+  "view_text": "version: 1.1\nmeasures:\n  - name: net_sales\n    expr: sum(net_sales)\n  - name: share\n    expr: sum(share)\n"
+}

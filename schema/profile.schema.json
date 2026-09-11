@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://supreme-metric.dev/schema/profile.schema.json", "title": "Supreme Metric profile v1", "type": "object", "additionalProperties": false,
+  "required": ["spec_version", "owners", "surfaces", "windows", "benchmarks"],
+  "properties": {
+    "spec_version": {"const": 1}, "name": {"type": "string"},
+    "owners": {"type": "object", "patternProperties": {"^[^\\s]+$": {"type": "object", "additionalProperties": false, "required": ["label"], "properties": {"label": {"type": "string"}, "color": {"type": "string"}}}}, "additionalProperties": false},
+    "surfaces": {"type": "object", "patternProperties": {"^[^\\s]+$": {"type": "object", "additionalProperties": false, "required": ["label", "cadence", "closed"], "properties": {"label": {"type": "string"}, "cadence": {"type": "string"}, "closed": {"type": "boolean"}}}}, "additionalProperties": false},
+    "windows": {"type": "object", "patternProperties": {"^[^\\s]+$": {"type": "object", "additionalProperties": false, "required": ["label", "kind"], "properties": {"label": {"type": "string"}, "kind": {"enum": ["flow", "snapshot"]}}}}, "additionalProperties": false},
+    "benchmarks": {"type": "object", "patternProperties": {"^[^\\s]+$": {"type": "object", "additionalProperties": false, "required": ["label"], "properties": {"label": {"type": "string"}, "allowed_on_surfaces": {"type": "array", "items": {"type": "string"}}}}}, "additionalProperties": false},
+    "display": {"type": "object", "additionalProperties": false, "properties": {"currency": {"type": "string"}, "magnitude": {"enum": ["words", "symbols"]}}}
+  }
+}

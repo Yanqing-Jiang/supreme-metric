@@ -1,0 +1,6 @@
+# Replace these placeholders with approved reviewers before copying into .github/CODEOWNERS.
+/profile.yaml @OWNER
+/questions/ @OWNER
+/rulings/ @OWNER
+/schema/ @OWNER
+/.github/ @OWNER

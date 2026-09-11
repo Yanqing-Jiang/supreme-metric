@@ -1,0 +1,39 @@
+# Supreme Metric
+
+> A spec and linter for governed metric topology. One metric per business question carries the verdict; companions and diagnostics sit beside it; owners, windows, benchmarks, and forbidden comparisons are written once in YAML, in git, and a linter checks every number a report wants to show. It never computes a number.
+
+Start with AGENTS.md if you are an agent standing this up for an organization. Start with README.md if you are a person.
+
+## Agent entry point
+
+- [AGENTS.md](AGENTS.md): division of labor, the nine-step sequence, file shapes, rules, forbidden actions, definition of done
+- [docs/agent-standup.md](docs/agent-standup.md): the step-by-step runbook, warehouse-agnostic
+- [docs/azure-databricks.md](docs/azure-databricks.md): authentication, discovery queries, impl_ref syntax, sync semantics, permissions
+
+## Contract
+
+- [spec/SPEC.md](spec/SPEC.md): object types, roles, profile shape, compile and digest rules, claim pack, finding codes
+- [schema/](schema/): JSON Schema (draft 2020-12) for profile, metric, metrics file, question, ruling, claim pack, discovery output, sync output
+
+## Examples
+
+- [examples/minimal-registry/](examples/minimal-registry/): smallest complete registry, one question
+- [examples/databricks-sales/](examples/databricks-sales/): two questions with Databricks impl_refs and an annotated Markdown report
+- [registry/](registry/): full reference registry for a sales organization, seven questions, sixteen metrics
+- [fixtures/invalid/](fixtures/invalid/): one failing claim pack per finding code
+
+## Commands
+
+- supreme init <dir> --profile <approved-profile.yaml>
+- supreme validate <dir> | supreme validate <file> --kind profile|metrics|question|ruling|claim-pack
+- supreme compile <dir> --out dist/topology.json
+- supreme inspect databricks --profile <p> --warehouse-id <id> --catalog <c> --schema <s> --out discovery.json
+- supreme sync databricks <dir> --profile <p> --warehouse-id <id> --out sync.json [--require-verified]
+- supreme pack <report.md> --topology dist/topology.json --out pack.yaml
+- supreme lint <pack.yaml> --topology dist/topology.json --format text|json|github
+
+## Optional
+
+- [docs/sales-pilot.md](docs/sales-pilot.md): one question from discovery to first governed report, with a deliberate drift exercise
+- [site/](site/): the landing page, also at https://yanqing.app/supreme-metric
+- [README.md](README.md): the human introduction

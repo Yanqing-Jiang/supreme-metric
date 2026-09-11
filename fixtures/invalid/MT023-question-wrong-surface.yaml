@@ -1,0 +1,3 @@
+surface: another_surface
+claims:
+  - {id: wrong-surface, metric: sales.net_sales_consumption, question: growing, role: score, window: p4w, benchmark: iya}

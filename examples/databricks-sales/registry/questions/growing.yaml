@@ -1,0 +1,8 @@
+id: growing
+label: Are we growing?
+purpose: Decide whether demand is increasing.
+surface: weekly_leadership
+order: 1
+score: sales.revenue
+companions: [sales.orders]
+rulings: [RULING-001-GROWTH]

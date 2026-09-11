@@ -1,0 +1,5 @@
+id: RULING-001-GROWTH
+date: 2026-09-11
+owner: sales
+statement: Revenue is the score and orders are required context.
+applies_to: [growing, sales.revenue, sales.orders]
