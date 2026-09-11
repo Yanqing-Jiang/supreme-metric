@@ -9,7 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: ${{ matrix.python-version }}}
+        with:
+          python-version: ${{ matrix.python-version }}
       - run: pip install -e ".[dev,schema]"
       - run: supreme validate registry
       - run: supreme validate examples/minimal-registry
