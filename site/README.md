@@ -10,7 +10,7 @@ The landing page, also served at https://yanqing.app/supreme-metric.
 | `metric-film.html` | the answer film, embedded by `index.html`. Three steps: define the standard, review every metric against it, ship what passes |
 | `govern.html` | an earlier playable page: drag metrics into a question and watch a JS port of the linter accept or reject them. Kept for reference; not linked from the landing page |
 
-No build step. The only external resource is system fonts. Serve the folder over HTTP to view it; `file://` blocks the iframes.
+No build step. The only external resource is Google Fonts, used by the Walk-Out film. Serve the folder over HTTP to view it; `file://` blocks the iframes.
 
 ```bash
 python3 -m http.server 8765 --directory site
