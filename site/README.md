@@ -5,7 +5,8 @@ The landing page, also served at https://yanqing.app/supreme-metric.
 | file | what |
 |---|---|
 | `index.html` | the page: hero, the question film, the three-step answer film, the three rules, footer |
-| `six-questions-apple.html` | the question film, embedded by `index.html`. Four teams walk out and shout eight true claims; "Govern the metrics" snaps them into one governed topology |
+| `walk-out.html` | the question film on wide screens: the artifact's Walk-Out, verbatim, on a scaled 1180×700 stage |
+| `six-questions-apple.html` | the question film on phones and tablets, embedded by `index.html`. Four teams walk out and shout eight true claims; "Govern the metrics" snaps them into one governed topology |
 | `metric-film.html` | the answer film, embedded by `index.html`. Three steps: define the standard, review every metric against it, ship what passes |
 | `govern.html` | an earlier playable page: drag metrics into a question and watch a JS port of the linter accept or reject them. Kept for reference; not linked from the landing page |
 
